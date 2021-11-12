@@ -22,6 +22,11 @@
     <form class="add-items">
       <input type="text" name="item" placeholder="Item Name" required>
       <input type="submit" value="+ Add Item">
+      <br>
+      <br>
+      <input id="clear" type="button" value="Clear">
+      <input id="select" type="button" value="Select All">
+      <input id="deselect" type="button" value="De-select All">
     </form>
   </div>
 
@@ -63,8 +68,38 @@
     populateList(items, itemsList);
   }
 
+  function clearItems() {
+    items.splice(0, items.length);
+    localStorage.removeItem("items");
+    populateList(items, itemsList);
+  }
+
+  function selectAll() {
+    items.forEach( item => {
+      item.done = true;
+    });
+    localStorage.setItem("items", JSON.stringify(items));
+    populateList(items, itemsList);
+  }
+
+  function deselectAll() {
+    items.forEach( item => {
+      item.done = false;
+    });
+    localStorage.setItem("items", JSON.stringify(items));
+    populateList(items, itemsList);
+  }
+
   addItems.addEventListener("submit", addItem);
   itemsList.addEventListener("click", toggleDone);
+
+  clearButton = document.getElementById("clear")
+  selectButton = document.getElementById("select")
+  deselectButton = document.getElementById("deselect")
+
+  clearButton.addEventListener("click", clearItems);
+  selectButton.addEventListener("click", selectAll);
+  deselectButton.addEventListener("click", deselectAll);
 
   populateList(items, itemsList);
 
